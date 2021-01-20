@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
-const organizationSchema = new mongoose.Schema({
+const employeeSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Name required'],
@@ -23,22 +23,22 @@ const organizationSchema = new mongoose.Schema({
   }
 })
 
-organizationSchema.statics.generateToken = (organization, expiresIn = '7d') => {
-  const organizationForToken = {
-    _id: organization._id,
-    type: 'organization'
+employeeSchema.statics.generateToken = (employee, expiresIn = '7d') => {
+  const employeeForToken = {
+      _id: employee._id,
+      type: 'employee'
   }
 
-  return jwt.sign(organizationForToken, process.env.SECRET, { expiresIn })
+  return jwt.sign(employeeForToken, process.env.SECRET, { expiresIn })
 }
 
-organizationSchema.statics.format = (organization) => ({
-  _id: organization._id,
-  name: organization.name,
-  username: organization.username,
-  type: 'organization'
+employeeSchema.statics.format = (employee) => ({
+  _id: employee._id,
+  name: employee.name,
+  username: employee.username,
+  type: 'employee'
 })
 
-const Organization = mongoose.model('Organization', organizationSchema)
+const Employee = mongoose.model('Employee', employeeSchema)
 
-module.exports = Organization
+module.exports = Employee
