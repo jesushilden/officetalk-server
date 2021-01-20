@@ -3,7 +3,7 @@ process.env.NODE_ENV !== 'production' && require('dotenv').config()
 const express = require('express')
 const db = require('./db')
 const app = express()
-const port = 3001
+const port = process.env.PORT
 
 const bodyParser = require('body-parser')
 
@@ -18,5 +18,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Listening at PORT: ${port}`)
 })
