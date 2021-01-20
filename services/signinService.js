@@ -1,6 +1,7 @@
 const Organization = require('../models/organization')
 const Employee = require('../models/employee')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const signin = async (token) => {
   const user = jwt.verify(token, process.env.SECRET)

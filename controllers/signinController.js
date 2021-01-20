@@ -7,10 +7,10 @@ const signin = async (request, response) => {
   
   try {
     const user = await signinService.signin(token)
-    user.collection.collectionName === 'organization' ? response.status(200).json(Organization.format(user)) : response.status(200).json(Employee.format(user))
+    user.collection.collectionName === 'organizations' ? response.status(200).json(Organization.format(user)) : response.status(200).json(Employee.format(user))
   } catch (exception) {
     console.error(exception)
-    response.status(400).json('Could not sign in organization')
+    response.status(400).json('Token not valid')
   }
 }
 
@@ -44,8 +44,14 @@ const signinEmployee = async (request, response) => {
   }
 }
 
+const signout = (request, response) => {
+  response.clearCookie('jwt')
+  response.status(204).end()
+}
+
 module.exports = {
   signin,
   signinOrganization,
-  signinEmployee
+  signinEmployee,
+  signout
 }

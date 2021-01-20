@@ -7,4 +7,6 @@ signinRouter.post('/organization', signinController.signinOrganization)
 
 signinRouter.post('/employee', signinController.signinEmployee)
 
+signinRouter.post('/signout', signinController.signout)
+
 module.exports = signinRouter
