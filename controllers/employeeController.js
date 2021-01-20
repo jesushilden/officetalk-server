@@ -1,5 +1,6 @@
 const Employee = require('../models/employee')
 const employeeService = require('../services/employeeService')
+const signinService = require('../services/signinService')
 
 const getAll = async (request, response) => {
   try {
@@ -27,9 +28,11 @@ const create = async (request, response) => {
   const name = request.body.name
   const username = request.body.username
   const password = request.body.password
+  const token = request.cookies['jwt']
   
   try {
-    const employee = await employeeService.create(name, username, password)
+    const organization = await signinService.signin(token)
+    const employee = await employeeService.create(name, username, password, organization)
     response.status(201).json(Employee.format(employee))
   } catch (exception) {
     console.error(exception)

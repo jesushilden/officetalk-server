@@ -10,7 +10,7 @@ const signin = async (request, response) => {
     user.collection.collectionName === 'organizations' ? response.status(200).json(Organization.format(user)) : response.status(200).json(Employee.format(user))
   } catch (exception) {
     console.error(exception)
-    response.status(400).json('Token not valid')
+    response.status(401).json('Token not valid')
   }
 }
 
@@ -25,7 +25,7 @@ const signinOrganization = async (request, response) => {
     response.status(200).json(Organization.format(organization))
   } catch (exception) {
     console.error(exception)
-    response.status(400).json('Could not sign in organization')
+    response.status(401).json('Could not sign in organization')
   }
 }
 
@@ -40,7 +40,7 @@ const signinEmployee = async (request, response) => {
     response.status(200).json(Employee.format(employee))
   } catch (exception) {
     console.error(exception)
-    response.status(400).json('Could not sign in employee')
+    response.status(401).json('Could not sign in employee')
   }
 }
 

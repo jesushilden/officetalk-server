@@ -20,7 +20,11 @@ const organizationSchema = new mongoose.Schema({
     required: [true, 'Password required'],
     minlength: [3, 'Password too short'],
     maxlength: [256, 'Password too long']
-  }
+  },
+  employees: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employee'
+  }]
 })
 
 organizationSchema.statics.generateToken = (organization, expiresIn = '7d') => {
@@ -36,6 +40,7 @@ organizationSchema.statics.format = (organization) => ({
   _id: organization._id,
   name: organization.name,
   username: organization.username,
+  employees: organization.employees,
   type: 'organization'
 })
 

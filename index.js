@@ -9,12 +9,14 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
 const organizationRouter = require('./routers/organizationRouter')
+const employeeRouter = require('./routers/employeeRouter')
 const signinRouter = require('./routers/signinRouter')
 
 app.use(bodyParser.json())
 app.use(cookieParser())
 
 app.use('/api/organizations', organizationRouter)
+app.use('/api/employees', employeeRouter)
 app.use('/api/signin', signinRouter)
 
 app.get('/', (req, res) => {

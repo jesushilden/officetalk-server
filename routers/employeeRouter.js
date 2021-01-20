@@ -1,11 +1,12 @@
 const employeeRouter = require('express').Router()
 const employeeController = require('../controllers/employeeController')
+const middleware = require('../utils/middleware')
 
 employeeRouter.get('/', employeeController.getAll)
 
 employeeRouter.get('/:id', employeeController.getOne)
 
-employeeRouter.post('/', employeeController.create)
+employeeRouter.post('/', middleware.organizationAuth, employeeController.create)
 
 employeeRouter.put('/:id', employeeController.updateOne)
 
