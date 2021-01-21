@@ -1,7 +1,6 @@
 const Employee = require('../models/employee')
 const Organization = require('../models/organization')
 const bcrypt = require('bcrypt')
-const { findById } = require('../models/organization')
 
 const getAll = async () => {
   return await Employee.find({})

@@ -1,5 +1,7 @@
 const Organization = require('../models/organization')
 const Employee = require('../models/employee')
+const Office = require('../models/office')
+const Room = require('../models/room')
 const bcrypt = require('bcrypt')
 
 const getAll = async () => {
@@ -27,6 +29,8 @@ const updateOne = async (id, name, username) => {
 
 const deleteOne = async (id) => {
   await Employee.deleteMany({ organization: id })
+  await Office.deleteOne({ organization: id })
+  await Room.deleteMany({ organization: id })
   await Organization.findByIdAndDelete(id)
 }
 
