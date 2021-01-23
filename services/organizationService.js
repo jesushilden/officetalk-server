@@ -10,6 +10,13 @@ const getAll = async () => {
 
 const getOne = async (id) => {
   return await Organization.findById(id)
+    .populate('employees', { _id: 1, name: 1, username: 1 })
+    .populate({
+      path: 'office',
+      populate: {
+        path: 'rooms'
+      }
+    })
 }
 
 const create = async (name, username, password) => {
