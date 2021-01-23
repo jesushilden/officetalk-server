@@ -51,8 +51,8 @@ const updateOne = async (request, response) => {
 
   try {
     const organization = await signinService.signin(token)
-    const room = await roomService.getOne(id)
-    if (organization._id !== room.organization) response.status(403).json('You do not have required permission to update room with id: ' + id)
+    const roomToUpdate = await roomService.getOne(id)
+    if (organization._id !== roomToUpdate.organization) response.status(403).json('You do not have required permission to update room with id: ' + id)
     const room = await roomService.updateOne(id, name, capacity)
     room ? response.json(Room.format(room)) : response.status(400).json('Could not find room with id: ' + id)
   } catch (exception) {

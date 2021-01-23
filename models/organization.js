@@ -45,6 +45,7 @@ organizationSchema.statics.format = (organization) => ({
   name: organization.name,
   username: organization.username,
   employees: organization.employees,
+  office: organization.office,
   type: 'organization'
 })
 

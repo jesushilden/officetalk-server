@@ -1,3 +1,4 @@
+const Organization = require('../models/organization')
 const Office = require('../models/office')
 const Room = require('../models/room')
 
