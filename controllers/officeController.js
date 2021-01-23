@@ -18,9 +18,9 @@ const getOne = async (request, response) => {
 
   try {
     const organization = await signinService.signin(token)
-    if (organization.office.toString() !== id) response.status(403).json('You do not have required permission to fetch office with id: ' + id)
+    if (organization.office.toString() !== id) return response.status(403).json('You do not have required permission to fetch office with id: ' + id)
     const office = await officeService.getOne(id)
-    if (!office) response.status(400).json('Could not find office with id: ' + id)
+    if (!office) return response.status(400).json('Could not find office with id: ' + id)
     response.json(Office.format(office))
   } catch (exception) {
     console.error(exception)
@@ -34,6 +34,7 @@ const create = async (request, response) => {
 
   try {
     const organization = await signinService.signin(token)
+    if (organization.office) return response.status(400).json('Organization already has an office')
     const office = await officeService.create(name, organization)
     response.status(201).json(Office.format(office))
   } catch (exception) {
@@ -49,7 +50,7 @@ const updateOne = async (request, response) => {
 
   try {
     const organization = await signinService.signin(token)
-    if (organization.office.toString() !== id) response.status(403).json('You do not have required permission to update office with id: ' + id)
+    if (organization.office.toString() !== id) return response.status(403).json('You do not have required permission to update office with id: ' + id)
     const office = await officeService.updateOne(id, name)
     office ? response.json(Office.format(office)) : response.status(400).json('Could not find office with id: ' + id)
   } catch (exception) {
@@ -64,7 +65,7 @@ const deleteOne = async (request, response) => {
 
   try {
     const organization = await signinService.signin(token)
-    if (organization.office.toString() !== id) response.status(403).json('You do not have required permission to delete office with id: ' + id)
+    if (organization.office.toString() !== id) return response.status(403).json('You do not have required permission to delete office with id: ' + id)
     await officeService.deleteOne(id)
     response.status(204).end()
   } catch (exception) {

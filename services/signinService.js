@@ -31,7 +31,7 @@ const signinOrganization = async (username, password) => {
 const signinEmployee = async (username, password) => {
   const employee = await Employee.findOne({ username })
 
-  const passwordCorrect = employee && await bcrypt.compare(password, employee.passwordHash)
+  const passwordCorrect = employee && await bcrypt.compare(password, employee.password)
 
   if (!passwordCorrect) {
     throw new Error('Invalid username or password')

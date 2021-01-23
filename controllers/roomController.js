@@ -19,8 +19,8 @@ const getOne = async (request, response) => {
   try {
     const organization = await signinService.signin(token)
     const room = await roomService.getOne(id)
-    if (!room) response.status(400).json('Could not find room with id: ' + id)
-    if (organization._id !== room.organization) response.status(403).json('You do not have required permission to fetch room with id: ' + id)
+    if (!room) return response.status(400).json('Could not find room with id: ' + id)
+    if (organization._id !== room.organization) return response.status(403).json('You do not have required permission to fetch room with id: ' + id)
     response.json(Room.format(room))
   } catch (exception) {
     console.error(exception)
@@ -52,7 +52,7 @@ const updateOne = async (request, response) => {
   try {
     const organization = await signinService.signin(token)
     const roomToUpdate = await roomService.getOne(id)
-    if (organization._id !== roomToUpdate.organization) response.status(403).json('You do not have required permission to update room with id: ' + id)
+    if (organization._id !== roomToUpdate.organization) return response.status(403).json('You do not have required permission to update room with id: ' + id)
     const room = await roomService.updateOne(id, name, capacity)
     room ? response.json(Room.format(room)) : response.status(400).json('Could not find room with id: ' + id)
   } catch (exception) {
@@ -68,7 +68,7 @@ const deleteOne = async (request, response) => {
   try {
     const organization = await signinService.signin(token)
     const room = await roomService.getOne(id)
-    if (organization._id !== room.organization) response.status(403).json('You do not have required permission to delete room with id: ' + id)
+    if (organization._id !== room.organization) return response.status(403).json('You do not have required permission to delete room with id: ' + id)
     await roomService.deleteOne(id)
     response.status(204).end()
   } catch (exception) {
