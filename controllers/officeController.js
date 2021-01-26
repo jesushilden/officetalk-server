@@ -29,13 +29,12 @@ const getOne = async (request, response) => {
 }
 
 const create = async (request, response) => {
-  const name = request.body.name
   const token = request.cookies['jwt']
 
   try {
     const organization = await signinService.signin(token)
     if (organization.office) return response.status(400).json('Organization already has an office')
-    const office = await officeService.create(name, organization)
+    const office = await officeService.create(organization)
     response.status(201).json(Office.format(office))
   } catch (exception) {
     console.error(exception)
@@ -45,13 +44,12 @@ const create = async (request, response) => {
 
 const updateOne = async (request, response) => {
   const id = request.params.id
-  const name = request.body.name
   const token = request.cookies['jwt']
 
   try {
     const organization = await signinService.signin(token)
     if (organization.office.toString() !== id) return response.status(403).json('You do not have required permission to update office with id: ' + id)
-    const office = await officeService.updateOne(id, name)
+    const office = await officeService.updateOne(id)
     office ? response.json(Office.format(office)) : response.status(400).json('Could not find office with id: ' + id)
   } catch (exception) {
     console.error(exception)

@@ -10,10 +10,9 @@ const getOne = async (id) => {
   return await Office.findById(id)
 }
 
-const create = async (name, organization) => {
+const create = async (organization) => {
 
   const office = await Office.create({
-    name,
     organization: organization._id
   })
 
@@ -22,8 +21,8 @@ const create = async (name, organization) => {
   return office
 }
 
-const updateOne = async (id, name) => {
-  return await Office.findByIdAndUpdate(id, { name }, { new: true })
+const updateOne = async (id) => {
+  return await Office.findByIdAndUpdate(id, { }, { new: true })
 }
 
 const deleteOne = async (id) => {

@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
 
 const officeSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    minlength: 1,
-    maxlength: 256
-  },
   rooms: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Room'
@@ -18,7 +13,6 @@ const officeSchema = new mongoose.Schema({
 
 officeSchema.statics.format = (office) => ({
   _id: office._id,
-  name: office.name,
   rooms: office.rooms,
   organization: office.organization
 })
