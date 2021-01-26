@@ -21,8 +21,8 @@ messageSchema.statics.format = (message) => ({
   _id: message._id,
   content: message.content,
   author: message.author,
-  office: message.office,
-  organization: message.organization
+  organization: message.organization,
+  createdAt: message.createdAt
 })
 
 const Message = mongoose.model('Message', messageSchema)

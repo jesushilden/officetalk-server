@@ -29,7 +29,7 @@ const employeeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Organization'
   }
-})
+}, { timestamps: true })
 
 employeeSchema.statics.generateToken = (employee, expiresIn = '7d') => {
   const employeeForToken = {
@@ -47,7 +47,7 @@ employeeSchema.statics.format = (employee) => ({
   avatar: employee.avatar,
   organization: employee.organization,
   type: 'employee'
-}, { timestamps: true })
+})
 
 const Employee = mongoose.model('Employee', employeeSchema)
 

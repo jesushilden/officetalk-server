@@ -10,12 +10,27 @@ const getAll = async () => {
 
 const getOne = async (id) => {
   return await Organization.findById(id)
-    .populate('employees', { _id: 1, name: 1, username: 1 })
+    .populate({
+      path: 'employees',
+      select: '_id name username avatar'
+    })
     .populate({
       path: 'office',
-      populate: {
-        path: 'rooms'
-      }
+      select: '_id rooms messages organization',
+      populate: [
+        {
+          path: 'rooms',
+          select: '_id name capacity organization'
+        },
+        {
+          path: 'messages',
+          select: '_id content author createdAt',
+          populate: {
+            path: 'author',
+            select: '_id name username avatar'
+          }
+        }
+      ]
     })
 }
 
