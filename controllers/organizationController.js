@@ -27,9 +27,10 @@ const create = async (request, response) => {
   const name = request.body.name
   const username = request.body.username
   const password = request.body.password
+  const logo = request.body.logo
   
   try {
-    const organization = await organizationService.create(name, username, password)
+    const organization = await organizationService.create(name, username, password, logo)
     response.status(201).json(Organization.format(organization))
   } catch (exception) {
     console.error(exception)
@@ -41,9 +42,10 @@ const updateOne = async (request, response) => {
   const id = request.params.id
   const name = request.body.name
   const username = request.body.username
+  const logo = request.body.logo
   
   try {  
-    const organization = await organizationService.updateOne(id, name, username)
+    const organization = await organizationService.updateOne(id, name, username, logo)
     organization ? response.json(Organization.format(organization)) : response.status(400).json('Could not find organization with id: ' + id)
   } catch (exception) {
     console.error(exception)

@@ -19,19 +19,20 @@ const getOne = async (id) => {
     })
 }
 
-const create = async (name, username, password) => {
+const create = async (name, username, password, logo) => {
   const passwordHash = await bcrypt.hash(password, 10)
 
   const organization = {
     name,
     username,
-    password: passwordHash
+    password: passwordHash,
+    logo
   }
   return await Organization.create(organization)
 }
 
-const updateOne = async (id, name, username) => {
-  return await Organization.findByIdAndUpdate(id, { name, username }, { new: true })
+const updateOne = async (id, name, username, logo) => {
+  return await Organization.findByIdAndUpdate(id, { name, username, logo }, { new: true })
 }
 
 const deleteOne = async (id) => {

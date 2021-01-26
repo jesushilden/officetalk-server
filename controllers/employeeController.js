@@ -28,11 +28,12 @@ const create = async (request, response) => {
   const name = request.body.name
   const username = request.body.username
   const password = request.body.password
+  const avatar = request.body.avatar
   const token = request.cookies['jwt']
   
   try {
     const organization = await signinService.signin(token)
-    const employee = await employeeService.create(name, username, password, organization)
+    const employee = await employeeService.create(name, username, password, avatar, organization)
     response.status(201).json(Employee.format(employee))
   } catch (exception) {
     console.error(exception)
@@ -44,9 +45,10 @@ const updateOne = async (request, response) => {
   const id = request.params.id
   const name = request.body.name
   const username = request.body.username
+  const avatar = request.body.avatar
   
   try {  
-    const employee = await employeeService.updateOne(id, name, username)
+    const employee = await employeeService.updateOne(id, name, username, avatar)
     employee ? response.json(Employee.format(employee)) : response.status(400).json('Could not find employee with id: ' + id)
   } catch (exception) {
     console.error(exception)

@@ -21,6 +21,10 @@ const organizationSchema = new mongoose.Schema({
     minlength: [3, 'Password too short'],
     maxlength: [256, 'Password too long']
   },
+  logo: {
+    type: String,
+    maxlength: [2048, 'Logo url too long']
+  },
   employees: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee'
@@ -44,6 +48,7 @@ organizationSchema.statics.format = (organization) => ({
   _id: organization._id,
   name: organization.name,
   username: organization.username,
+  logo: organization.logo,
   employees: organization.employees,
   office: organization.office,
   type: 'organization'

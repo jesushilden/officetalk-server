@@ -10,13 +10,14 @@ const getOne = async (id) => {
   return await Employee.findById(id)
 }
 
-const create = async (name, username, password, organization) => {
+const create = async (name, username, password, avatar, organization) => {
   const passwordHash = await bcrypt.hash(password, 10)
 
   const employee = await Employee.create({
     name,
     username,
     password: passwordHash,
+    avatar,
     organization: organization._id
   })
 
@@ -25,8 +26,8 @@ const create = async (name, username, password, organization) => {
   return employee
 }
 
-const updateOne = async (id, name, username) => {
-  return await Employee.findByIdAndUpdate(id, { name, username }, { new: true })
+const updateOne = async (id, name, username, avatar) => {
+  return await Employee.findByIdAndUpdate(id, { name, username, avatar }, { new: true })
 }
 
 const deleteOne = async (id) => {
