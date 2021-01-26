@@ -8,8 +8,12 @@ const officeSchema = new mongoose.Schema({
   organization: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Organization'
-  }
-})
+  },
+  messages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message'
+  }]
+}, { timestamps: true })
 
 officeSchema.statics.format = (office) => ({
   _id: office._id,

@@ -33,7 +33,7 @@ const organizationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Office'
   }
-})
+}, { timestamps: true })
 
 organizationSchema.statics.generateToken = (organization, expiresIn = '7d') => {
   const organizationForToken = {

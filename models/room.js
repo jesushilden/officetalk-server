@@ -19,7 +19,7 @@ const roomSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Organization'
   }
-})
+}, { timestamps: true })
 
 roomSchema.statics.format = (room) => ({
   _id: room._id,

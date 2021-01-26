@@ -47,7 +47,7 @@ employeeSchema.statics.format = (employee) => ({
   avatar: employee.avatar,
   organization: employee.organization,
   type: 'employee'
-})
+}, { timestamps: true })
 
 const Employee = mongoose.model('Employee', employeeSchema)
 
