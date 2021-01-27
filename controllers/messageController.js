@@ -1,3 +1,4 @@
+const { isValidObjectId } = require('mongoose')
 const Message = require('../models/message')
 const messageService = require('../services/messageService')
 const signinService = require('../services/signinService')
@@ -35,6 +36,7 @@ const create = async (request, response) => {
   try {
     const employee = await signinService.signin(token)
     const message = await messageService.create(content, employee)
+    response.locals.io.emit('message', { message })
     response.status(201).json(Message.format(message))
   } catch (exception) {
     console.error(exception)
