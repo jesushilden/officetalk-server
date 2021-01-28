@@ -9,7 +9,7 @@ const getAll = async () => {
 }
 
 const getOne = async (id) => {
-  return await Organization.findById(id)
+  const organization = await Organization.findById(id)
     .populate({
       path: 'employees',
       select: '_id name username avatar'
@@ -32,6 +32,10 @@ const getOne = async (id) => {
         }
       ]
     })
+
+    organization.office.messages.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)
+
+    return organization
 }
 
 const create = async (name, username, password, logo) => {
