@@ -4,10 +4,11 @@ const signinService = require('../services/signinService')
 
 const signin = async (request, response) => {
   const token = request.cookies['jwt']
-  
+
   try {
     const user = await signinService.signin(token)
-    user.collection.collectionName === 'organizations' ? response.status(200).json(Organization.format(user)) : response.status(200).json(Employee.format(user))
+    const formattedUser = user.collection.collectionName === 'organizations' ? Organization.format(user) : Employee.format(user)
+    response.status(200).json({ token, user: formattedUser })
   } catch (exception) {
     console.error(exception)
     response.status(401).json('Token not valid')
@@ -20,9 +21,10 @@ const signinOrganization = async (request, response) => {
 
   try {
     const organization = await signinService.signinOrganization(username, password)
+    const formattedOrganization = Organization.format(organization)
     const token = Organization.generateToken(organization)
     response.cookie('jwt', token, { expires: new Date(Date.now() + 604800000), httpOnly: true })
-    response.status(200).json(Organization.format(organization))
+    response.status(200).json({ token, user: formattedOrganization })
   } catch (exception) {
     console.error(exception)
     response.status(401).json('Could not sign in organization')
@@ -35,9 +37,10 @@ const signinEmployee = async (request, response) => {
 
   try {
     const employee = await signinService.signinEmployee(username, password)
+    const formattedEmployee = Employee.format(employee)
     const token = Employee.generateToken(employee)
     response.cookie('jwt', token, { expires: new Date(Date.now() + 604800000), httpOnly: true })
-    response.status(200).json(Employee.format(employee))
+    response.status(200).json({ token, user: formattedEmployee })
   } catch (exception) {
     console.error(exception)
     response.status(401).json('Could not sign in employee')

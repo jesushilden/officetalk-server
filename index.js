@@ -24,7 +24,7 @@ const signinRouter = require('./routers/signinRouter')
 
 io.on('connection', socket => {
   console.log('client', socket.id, 'connected')
-  console.log(socket.request.headers.cookie)
+  console.log(socket.handshake.auth.token)
   socket.on('disconnect', () => {
     console.log('user', socket.id, 'disconnected')
   })
