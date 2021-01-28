@@ -15,6 +15,9 @@ const create = async (content, employee) => {
     content,
     author: employee._id,
     organization: employee.organization
+  }).populate({
+    path: 'author',
+    select: '_id name username avatar'
   })
 
   await Office.findOneAndUpdate({ organization: employee.organization }, { $addToSet: { messages: message._id } })

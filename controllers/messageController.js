@@ -36,8 +36,9 @@ const create = async (request, response) => {
   try {
     const employee = await signinService.signin(token)
     const message = await messageService.create(content, employee)
-    response.locals.io.emit('message', { message })
-    response.status(201).json(Message.format(message))
+    const formattedMessage = Message.format(message)
+    response.locals.io.emit('message', formattedMessage)
+    response.status(201).json(formattedMessage)
   } catch (exception) {
     console.error(exception)
     response.status(400).json('Could not create message')
