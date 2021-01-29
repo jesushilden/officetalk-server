@@ -25,11 +25,16 @@ const messageRouter = require('./routers/messageRouter')
 const signinRouter = require('./routers/signinRouter')
 
 const workspaces = io.of(/^\/\w+$/)
+const clients = {}
 
 workspaces.on('connection', async (socket) => {
   const workspace = socket.nsp
   console.log('client', socket.id, 'connected to workspace', workspace.name)
+  const employees = Array.from(workspace.sockets.keys()).map(socketId => clients[socketId])
+  workspace.emit('employees', employees)
+
   socket.on('disconnect', () => {
+    delete clients[socket.id]
     console.log('user', socket.id, 'disconnected')
   })
 })
@@ -38,6 +43,9 @@ workspaces.use(async (socket, next) => {
   // ensure the user has access to the workspace
   const user = await signinService.signin(socket.handshake.auth.token)
   if (user.organization.toString() === socket.nsp.name.substring(1)) {
+    if (!clients[socket.id]) {
+      clients[socket.id] = user
+    }
     next()
   } else {
     next(new Error('Token not valid'))
