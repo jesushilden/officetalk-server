@@ -32,8 +32,10 @@ const getOne = async (id) => {
         }
       ]
     })
-
-    organization.office.messages.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)
+    
+    if (organization.office && organization.office.messages) {
+      organization.office.messages.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)
+    }
 
     return organization
 }

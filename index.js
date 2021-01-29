@@ -12,6 +12,8 @@ const io = require('socket.io')(server, {
 })
 const port = process.env.PORT
 
+const signinService = require('./services/signinService')
+
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
@@ -22,12 +24,24 @@ const roomRouter = require('./routers/roomRouter')
 const messageRouter = require('./routers/messageRouter')
 const signinRouter = require('./routers/signinRouter')
 
-io.on('connection', socket => {
-  console.log('client', socket.id, 'connected')
-  console.log(socket.handshake.auth.token)
+const workspaces = io.of(/^\/\w+$/)
+
+workspaces.on('connection', async (socket) => {
+  const workspace = socket.nsp
+  console.log('client', socket.id, 'connected to workspace', workspace.name)
   socket.on('disconnect', () => {
     console.log('user', socket.id, 'disconnected')
   })
+})
+
+workspaces.use(async (socket, next) => {
+  // ensure the user has access to the workspace
+  const user = await signinService.signin(socket.handshake.auth.token)
+  if (user.organization.toString() === socket.nsp.name.substring(1)) {
+    next()
+  } else {
+    next(new Error('Token not valid'))
+  }
 })
 
 app.use((req, res, next) => {
