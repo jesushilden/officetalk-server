@@ -57,6 +57,15 @@ workspaces.on('connection', async (socket) => {
 
   console.log('client', socket.id, 'connected to workspace', workspace.name)
 
+  socket.on('employeeState', ({ employeeState }) => {
+    if (socket.user._id.toString() !== employeeState.userId) {
+      new Error('Token not valid')
+    }
+    
+    clients[workspace.name][socket.id] = employeeState
+    workspace.emit('employeeState', employeeState)
+  })
+
   socket.on('disconnect', () => {
     delete clients[workspace.name][socket.id]
 
