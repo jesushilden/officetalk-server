@@ -12,6 +12,8 @@ const io = require('socket.io')(server, {
 })
 const port = process.env.PORT
 
+const path = require('path')
+
 const signinService = require('./services/signinService')
 
 const bodyParser = require('body-parser')
@@ -89,6 +91,8 @@ workspaces.use(async (socket, next) => {
     next(new Error('Token not valid'))
   }
 })
+
+app.use(express.static(path.join(__dirname, './build')))
 
 app.use((req, res, next) => {
   res.locals.io = io

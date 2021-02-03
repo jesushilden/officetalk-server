@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.99f6eeff.chunk.css",
+    "main.js": "/static/js/main.b1e70e47.chunk.js",
+    "main.js.map": "/static/js/main.b1e70e47.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c012fedc.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c012fedc.js.map",
+    "static/js/2.fd459967.chunk.js": "/static/js/2.fd459967.chunk.js",
+    "static/js/2.fd459967.chunk.js.map": "/static/js/2.fd459967.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.99f6eeff.chunk.css.map": "/static/css/main.99f6eeff.chunk.css.map",
+    "static/js/2.fd459967.chunk.js.LICENSE.txt": "/static/js/2.fd459967.chunk.js.LICENSE.txt",
+    "static/media/Hallway.css": "/static/media/Carpet.0f2c8fd2.jpg",
+    "static/media/Room.css": "/static/media/parquet3.90f38b0b.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c012fedc.js",
+    "static/js/2.fd459967.chunk.js",
+    "static/css/main.99f6eeff.chunk.css",
+    "static/js/main.b1e70e47.chunk.js"
+  ]
+}
