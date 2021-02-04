@@ -28,6 +28,7 @@ const signinRouter = require('./routers/signinRouter')
 
 const workspaces = io.of(/^\/\w+$/)
 const clients = {}
+const employeeStates = {}
 
 workspaces.on('connection', async (socket) => {
   const workspace = socket.nsp
@@ -36,8 +37,16 @@ workspaces.on('connection', async (socket) => {
     clients[workspace.name] = {}
   }
 
-  if (!clients[workspace.name][socket.id]) {
-    clients[workspace.name][socket.id] = {
+  if (!clients[workspace.name][socket.user._id]) {
+    clients[workspace.name][socket.user._id] = []
+  }
+
+  if (clients[workspace.name][socket.user._id].indexOf(socket.id) === -1) {
+    clients[workspace.name][socket.user._id].push(socket.id)
+  }
+
+  if (!employeeStates[socket.user._id]) {
+    employeeStates[socket.user._id] = {
       userId: socket.user._id,
       muted: false,
       silenced: false,
@@ -52,8 +61,8 @@ workspaces.on('connection', async (socket) => {
   }
 
   const employees = Object.keys(clients[workspace.name])
-    .map(socketId => clients[workspace.name][socketId])
-    .filter((user, index, array) => array.indexOf(user) === index)
+    .filter(userId => clients[workspace.name][userId].length !== 0)
+    .map(userId => employeeStates[userId])
 
   workspace.emit('employees', employees)
 
@@ -63,17 +72,17 @@ workspaces.on('connection', async (socket) => {
     if (socket.user._id.toString() !== employeeState.userId) {
       new Error('Token not valid')
     }
-    
-    clients[workspace.name][socket.id] = employeeState
+
+    employeeStates[socket.user._id] = employeeState
     workspace.emit('employeeState', employeeState)
   })
 
   socket.on('disconnect', () => {
-    delete clients[workspace.name][socket.id]
+    clients[workspace.name][socket.user._id] = clients[workspace.name][socket.user._id].filter(socketId => socketId !== socket.id)
 
     const employees = Object.keys(clients[workspace.name])
-      .map(socketId => clients[workspace.name][socketId])
-      .filter((user, index, array) => array.indexOf(user) === index)
+      .filter(userId => clients[workspace.name][userId].length !== 0)
+      .map(userId => employeeStates[userId])
 
     workspace.emit('employees', employees)
 
