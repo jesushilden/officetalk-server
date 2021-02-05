@@ -101,6 +101,18 @@ workspaces.on('connection', async (socket) => {
     
   })
 
+  socket.on('startCall', (data) => {
+    const employeesInRoom = Object.values(employeeStates)
+      .filter(employeeState => employeeState.position.room === employeeStates[socket.user._id].position.room)
+      .map(employeeState => employeeState.userId)
+    
+    employeesInRoom.forEach(employee => {
+      clients[workspace.name][employee].forEach(socketId => {
+        socket.to(socketId).emit('callAccepted', data)
+      })
+    })
+  })
+
   socket.on('disconnect', () => {
     clients[workspace.name][socket.user._id] = clients[workspace.name][socket.user._id].filter(socketId => socketId !== socket.id)
 
