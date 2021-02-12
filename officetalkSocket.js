@@ -25,14 +25,6 @@ class OfficetalkSocket {
       console.log('client', socket.id, 'connected')
       console.log('employee', employee._id, 'connected')
 
-      // These will be converted to REST
-      // These will be converted to REST
-      socket.on('updateEmployeeState', ({ employeeState }) => {
-        this.updateState(employeeState)
-      })
-      // These will be converted to REST
-      // These will be converted to REST
-
       socket.on('disconnect', () => {
         this.removeSocket(socket.id)
         console.log('employee', socket.id, 'disconnected')
@@ -93,25 +85,25 @@ class OfficetalkSocket {
     this.emitToOrganization(employeeState.organizationId, 'updateEmployeeState', employeeState)
   }
 
-  addRoomMessage(content, user) {
+  addRoomMessage(content, employee) {
     const roomMessage = {
       _id: this.mongoose.Types.ObjectId(),
       content,
       author: {
-        _id: user._id,
-        name: user.name,
-        username: user.username,
-        avatar: user.avatar
+        _id: employee._id,
+        name: employee.name,
+        username: employee.username,
+        avatar: employee.avatar
       }
     }
-    const employeeState = this.employeeStates.find(state => state.userId === user._id.toString())
+    const employeeState = this.employeeStates.find(state => state.employeeId === employee._id.toString())
 
-    this.emitToOrganizationRoom(employeeState.organizationId, employeeState.userId, 'roomMessage', roomMessage)
+    this.emitToOrganizationRoom(employeeState.organizationId, employeeState.employeeId, 'roomMessage', roomMessage)
   }
 
-  startCall(data, user) {
-    const employeeState = this.employeeStates.find(state => state.userId === user._id.toString())
-    this.emitToOrganizationRoom(employeeState.organizationId, employeeState.userId, 'callAccepted', data)
+  startCall(data, employee) {
+    const employeeState = this.employeeStates.find(state => state.employeeId === employee._id.toString())
+    this.emitToOrganizationRoom(employeeState.organizationId, employeeState.employeeId, 'callAccepted', data)
   }
 
   emitInitialStatesToSocket(socketId, organizationId) {

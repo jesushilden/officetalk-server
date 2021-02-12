@@ -1,14 +1,13 @@
 const signinService = require('../services/signinService')
 const officetalkSocket = require('../officetalkSocket')
-const { request } = require('express')
 
 const updateState = async (request, response) => {
   const token = request.cookies['jwt']
   const state = request.body
 
   try {
-    const user = await signinService.signin(token)
-    if (state.employeeId === user._id.toString()) {
+    const employee = await signinService.signin(token)
+    if (state.employeeId === employee._id.toString()) {
       officetalkSocket.updateState(state)
       response.status(200).end()
     } else {
@@ -25,8 +24,8 @@ const addRoomMessage = async (request, response) => {
   const content = request.body.content
 
   try {
-    const user = await signinService.signin(token)
-    officetalkSocket.addRoomMessage(content, user)
+    const employee = await signinService.signin(token)
+    officetalkSocket.addRoomMessage(content, employee)
   } catch (exception) {
     console.error(exception)
     response.status(401).json('Token not valid')
@@ -38,8 +37,8 @@ const startCall = async (request, response) => {
   const data = request.body
 
   try {
-    const user = await signinService.signin(token)
-    officetalkSocket.startCall(data, user)
+    const employee = await signinService.signin(token)
+    officetalkSocket.startCall(data, employee)
   } catch (exception) {
     console.error(exception)
     response.status(401).json('Token not valid')
