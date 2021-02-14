@@ -26,6 +26,7 @@ const addRoomMessage = async (request, response) => {
   try {
     const employee = await signinService.signin(token)
     officetalkSocket.addRoomMessage(content, employee)
+    response.status(200).end()
   } catch (exception) {
     console.error(exception)
     response.status(401).json('Token not valid')
@@ -39,6 +40,7 @@ const startCall = async (request, response) => {
   try {
     const employee = await signinService.signin(token)
     officetalkSocket.startCall(data, employee)
+    response.status(200).end()
   } catch (exception) {
     console.error(exception)
     response.status(401).json('Token not valid')

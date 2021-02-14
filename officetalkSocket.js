@@ -98,7 +98,7 @@ class OfficetalkSocket {
     }
     const employeeState = this.employeeStates.find(state => state.employeeId === employee._id.toString())
 
-    this.emitToOrganizationRoom(employeeState.organizationId, employeeState.employeeId, 'roomMessage', roomMessage)
+    this.emitToOrganizationRoom(employeeState.organizationId, employeeState.position.room, 'roomMessage', roomMessage)
   }
 
   startCall(data, employee) {
