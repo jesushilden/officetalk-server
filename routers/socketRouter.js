@@ -6,6 +6,8 @@ socketRouter.put('/employeeState', middleware.employeeAuth, socketController.upd
 
 socketRouter.post('/roomMessage', middleware.employeeAuth, socketController.addRoomMessage)
 
-socketRouter.post('/startCall', middleware.employeeAuth, socketController.startCall)
+socketRouter.post('/sendSignal', middleware.employeeAuth, socketController.sendSignal)
+
+socketRouter.post('/returnSignal', middleware.employeeAuth, socketController.returnSignal)
 
 module.exports = socketRouter

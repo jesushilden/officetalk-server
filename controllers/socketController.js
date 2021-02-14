@@ -33,13 +33,29 @@ const addRoomMessage = async (request, response) => {
   }
 }
 
-const startCall = async (request, response) => {
+const sendSignal = async (request, response) => {
   const token = request.cookies['jwt']
-  const data = request.body
+  const signal = request.body.signal
+  const employeeId = request.body.employeeId
 
   try {
     const employee = await signinService.signin(token)
-    officetalkSocket.startCall(data, employee)
+    officetalkSocket.sendSignal(employeeId, signal, employee)
+    response.status(200).end()
+  } catch (exception) {
+    console.error(exception)
+    response.status(401).json('Token not valid')
+  }
+}
+
+const returnSignal = async (request, response) => {
+  const token = request.cookies['jwt']
+  const signal = request.body.signal
+  const employeeId = request.body.employeeId
+
+  try {
+    const employee = await signinService.signin(token)
+    officetalkSocket.returnSignal(employeeId, signal, employee)
     response.status(200).end()
   } catch (exception) {
     console.error(exception)
@@ -50,5 +66,6 @@ const startCall = async (request, response) => {
 module.exports = {
   updateState,
   addRoomMessage,
-  startCall
+  sendSignal,
+  returnSignal
 }

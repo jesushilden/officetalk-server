@@ -106,9 +106,46 @@ class OfficetalkSocket {
     this.emitToOrganizationRoom(employeeState.organizationId, employeeState.employeeId, 'callAccepted', data)
   }
 
+  sendSignal(employeeId, signal, employee) {
+    const employeeState = this.employeeStates.find(state => state.employeeId === employee._id.toString())
+    const receiverState = this.employeeStates.find(state => state.employeeId === employeeId)
+
+    if (employeeState.organizationId !== receiverState.organizationId || employeeState.position.room !== receiverState.position.room) {
+      new Error('Not in same room')
+    }
+
+    const data = {
+      signal,
+      employeeId: employee._id.toString()
+    }
+    this.emitToEmployee(employeeId, 'sendSignal', data)
+  }
+
+  returnSignal(employeeId, signal, employee) {
+    const employeeState = this.employeeStates.find(state => state.employeeId === employee._id.toString())
+    const receiverState = this.employeeStates.find(state => state.employeeId === employeeId)
+
+    if (employeeState.organizationId !== receiverState.organizationId || employeeState.position.room !== receiverState.position.room) {
+      new Error('Not in same room')
+    }
+
+    const data = {
+      signal,
+      employeeId: employee._id.toString()
+    }
+    this.emitToEmployee(employeeId, 'returnSignal', data)
+  }
+
+
   emitInitialStatesToSocket(socketId, organizationId) {
     const statesToEmit = this.employeeStates.filter(state => state.organizationId === organizationId)
     this.io.to(socketId).emit('employeeStates', statesToEmit)
+  }
+
+  emitToEmployee(employeeId, eventName, eventPayload) {
+    this.employeeSockets.get(employeeId).forEach(socketId => {
+      this.io.to(socketId).emit(eventName, eventPayload)
+    })
   }
 
   emitToOrganization(organizationId, eventName, eventPayload) {
