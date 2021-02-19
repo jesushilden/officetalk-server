@@ -141,7 +141,8 @@ class OfficetalkSocket {
   async emitInitialDataToSocket(socketId, organizationId) {
     const statesToEmit = this.employeeStates.filter(state => state.organizationId === organizationId)
     const twilioToken = await this.twilio.tokens.create()
-    this.io.to(socketId).emit('initialData', { employeeStates: statesToEmit, iceServers: twilioToken.iceServers })
+    const iceServers = twilioToken.iceServers.filter(server => server.url.includes('stun'))
+    this.io.to(socketId).emit('initialData', { employeeStates: statesToEmit, iceServers })
   }
 
   emitToEmployee(employeeId, eventName, eventPayload) {
