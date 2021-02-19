@@ -5,6 +5,7 @@ class OfficetalkSocket {
     this.mongoose = require('mongoose')
     this.employeeSockets = new Map()
     this.employeeStates = []
+    this.twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
   }
 
   initialize(server) {
@@ -19,7 +20,7 @@ class OfficetalkSocket {
 
       const employee = await this.signinService.signin(socket.handshake.auth.token)
 
-      this.emitInitialStatesToSocket(socket.id, employee.organization.toString())
+      await this.emitInitialDataToSocket(socket.id, employee.organization.toString())
       this.addSocket(employee, socket.id)
 
       console.log('client', socket.id, 'connected')
@@ -137,9 +138,10 @@ class OfficetalkSocket {
   }
 
 
-  emitInitialStatesToSocket(socketId, organizationId) {
+  async emitInitialDataToSocket(socketId, organizationId) {
     const statesToEmit = this.employeeStates.filter(state => state.organizationId === organizationId)
-    this.io.to(socketId).emit('employeeStates', statesToEmit)
+    const twilioToken = await this.twilio.tokens.create()
+    this.io.to(socketId).emit('initialData', { employeeStates: statesToEmit, iceServers: twilioToken.iceServers })
   }
 
   emitToEmployee(employeeId, eventName, eventPayload) {
