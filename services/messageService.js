@@ -1,4 +1,4 @@
-const Office = require('../models/office')
+const Organization = require('../models/organization')
 const Message = require('../models/message')
 
 const getAll = async () => {
@@ -17,7 +17,7 @@ const create = async (content, employee) => {
     organization: employee.organization
   })
 
-  await Office.findOneAndUpdate({ organization: employee.organization }, { $addToSet: { messages: message._id } })
+  await Organization.findOneAndUpdate({ _id: employee.organization }, { $addToSet: { messages: message._id } })
 
   return message
     .populate({
@@ -34,7 +34,7 @@ const updateOne = async (id, content) => {
 const deleteOne = async (id) => {
   const message = await Message.findById(id)
 
-  await Office.findOneAndUpdate({ organization: message.organization }, { $pull: { messages: message._id } })
+  await Organization.findOneAndUpdate({ _id: message.organization }, { $pull: { messages: message._id } })
 
   await message.remove()
 }

@@ -1,4 +1,4 @@
-const Office = require('../models/office')
+const Organization = require('../models/organization')
 const Room = require('../models/room')
 
 const getAll = async () => {
@@ -14,11 +14,10 @@ const create = async (name, capacity, organization) => {
   const room = await Room.create({
     name,
     capacity,
-    office: organization.office,
     organization: organization._id
   })
 
-  await Office.findByIdAndUpdate(organization.office, { $addToSet: { rooms: room._id } })
+  await Organization.findByIdAndUpdate(organization._id, { $addToSet: { rooms: room._id } })
 
   return room
 }
@@ -30,7 +29,7 @@ const updateOne = async (id, name, capacity) => {
 const deleteOne = async (id) => {
   const room = await Room.findById(id)
 
-  await Office.findByIdAndUpdate(room.office, { $pull: { rooms: room._id } })
+  await Organization.findByIdAndUpdate(room.organization, { $pull: { rooms: room._id } })
 
   await room.remove()
 }

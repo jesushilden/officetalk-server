@@ -11,10 +11,6 @@ const roomSchema = new mongoose.Schema({
     min: 0,
     max: 100
   },
-  office: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Office'
-  },
   organization: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Organization'
@@ -25,7 +21,6 @@ roomSchema.statics.format = (room) => ({
   _id: room._id,
   name: room.name,
   capacity: room.capacity,
-  office: room.office,
   organization: room.organization
 })
 

@@ -29,10 +29,14 @@ const organizationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee'
   }],
-  office: {
+  rooms: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Office'
-  }
+    ref: 'Room'
+  }],
+  messages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message'
+  }]
 }, { timestamps: true })
 
 organizationSchema.statics.generateToken = (organization, expiresIn = '7d') => {
@@ -50,7 +54,8 @@ organizationSchema.statics.format = (organization) => ({
   username: organization.username,
   logo: organization.logo,
   employees: organization.employees,
-  office: organization.office,
+  rooms: organization.rooms,
+  messages: organization.messages,
   type: 'organization'
 })
 

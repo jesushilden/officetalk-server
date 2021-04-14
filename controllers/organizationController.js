@@ -44,7 +44,7 @@ const updateOne = async (request, response) => {
   const username = request.body.username
   const logo = request.body.logo
   
-  try {  
+  try {
     const organization = await organizationService.updateOne(id, name, username, logo)
     organization ? response.json(Organization.format(organization)) : response.status(400).json('Could not find organization with id: ' + id)
   } catch (exception) {

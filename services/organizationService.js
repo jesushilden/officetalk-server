@@ -1,6 +1,5 @@
 const Organization = require('../models/organization')
 const Employee = require('../models/employee')
-const Office = require('../models/office')
 const Room = require('../models/room')
 const bcrypt = require('bcrypt')
 
@@ -15,29 +14,21 @@ const getOne = async (id) => {
       select: '_id name username avatar'
     })
     .populate({
-      path: 'office',
-      select: '_id rooms messages organization',
-      populate: [
-        {
-          path: 'rooms',
-          select: '_id name capacity organization'
-        },
-        {
-          path: 'messages',
-          select: '_id content author createdAt',
-          populate: {
-            path: 'author',
-            select: '_id name username avatar'
-          }
-        }
-      ]
+      path: 'rooms',
+      select: '_id name capacity organization'
     })
-    
-    if (organization.office && organization.office.messages) {
-      organization.office.messages.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)
-    }
+    .populate({
+      path: 'messages',
+      select: '_id content author createdAt',
+      populate: {
+        path: 'author',
+        select: '_id name username avatar'
+      }
+    })
 
-    return organization
+  organization.messages.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)
+
+  return organization
 }
 
 const create = async (name, username, password, logo) => {
@@ -58,7 +49,6 @@ const updateOne = async (id, name, username, logo) => {
 
 const deleteOne = async (id) => {
   await Employee.deleteMany({ organization: id })
-  await Office.deleteOne({ organization: id })
   await Room.deleteMany({ organization: id })
   await Organization.findByIdAndDelete(id)
 }
