@@ -1,6 +1,5 @@
 const Organization = require('../models/organization')
 const Employee = require('../models/employee')
-const Room = require('../models/room')
 const bcrypt = require('bcrypt')
 
 const getAll = async () => {
@@ -12,10 +11,6 @@ const getOne = async (id) => {
     .populate({
       path: 'employees',
       select: '_id name username avatar'
-    })
-    .populate({
-      path: 'rooms',
-      select: '_id name capacity organization'
     })
     .populate({
       path: 'messages',
@@ -43,13 +38,12 @@ const create = async (name, username, password, logo) => {
   return await Organization.create(organization)
 }
 
-const updateOne = async (id, name, username, logo) => {
-  return await Organization.findByIdAndUpdate(id, { name, username, logo }, { new: true })
+const updateOne = async (id, name, username, logo, rooms) => {
+  return await Organization.findByIdAndUpdate(id, { name, username, logo, rooms }, { new: true })
 }
 
 const deleteOne = async (id) => {
   await Employee.deleteMany({ organization: id })
-  await Room.deleteMany({ organization: id })
   await Organization.findByIdAndDelete(id)
 }
 

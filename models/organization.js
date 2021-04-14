@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const roomSchema = require('./roomSchema')
 
 const organizationSchema = new mongoose.Schema({
   name: {
@@ -29,10 +30,7 @@ const organizationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee'
   }],
-  rooms: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Room'
-  }],
+  rooms: [roomSchema],
   messages: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Message'
