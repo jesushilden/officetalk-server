@@ -46,9 +46,11 @@ const updateOne = async (request, response) => {
   const name = request.body.name
   const username = request.body.username
   const avatar = request.body.avatar
+  const PTKey = request.body.PTKey
+  const pushToTalk = request.body.pushToTalk
   
   try {  
-    const employee = await employeeService.updateOne(id, name, username, avatar)
+    const employee = await employeeService.updateOne(id, name, username, avatar, PTKey, pushToTalk)
     employee ? response.json(Employee.format(employee)) : response.status(400).json('Could not find employee with id: ' + id)
   } catch (exception) {
     console.error(exception)

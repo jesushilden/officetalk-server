@@ -26,8 +26,8 @@ const create = async (name, username, password, avatar, organization) => {
   return employee
 }
 
-const updateOne = async (id, name, username, avatar) => {
-  return await Employee.findByIdAndUpdate(id, { name, username, avatar }, { new: true })
+const updateOne = async (id, name, username, avatar, PTKey, pushToTalk) => {
+  return await Employee.findByIdAndUpdate(id, { name, username, avatar, PTKey, pushToTalk }, { new: true })
 }
 
 const deleteOne = async (id) => {
